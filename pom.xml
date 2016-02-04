@@ -4,7 +4,7 @@
 
 	<groupId>tw.com.ehanlin</groupId>
 	<artifactId>secret-aes</artifactId>
-	<version>1.0.0</version>
+	<version>PASS</version>
 	<packaging>jar</packaging>
 
 	<name>secret-aes</name>
