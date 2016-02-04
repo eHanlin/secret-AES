@@ -23,7 +23,14 @@ public class Converter {
      * @return
      */
     public static String encrypt(String msg) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException{
-        return msg;
+        byte[] raw = Key.key.getBytes("ASCII");
+        SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        IvParameterSpec iv = new IvParameterSpec(Key.iv.getBytes());
+        cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
+        byte[] encrypted = cipher.doFinal(msg.getBytes("UTF-8"));
+
+        return byte2hex(encrypted).toLowerCase();
     }
     
     /**
@@ -32,7 +39,15 @@ public class Converter {
      * @return
      */
     public static String decrypt(String msg) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException{
-        return msg;
+        byte[] raw = Key.key.getBytes("ASCII");
+        SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        IvParameterSpec iv = new IvParameterSpec(Key.iv.getBytes());
+        cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
+        byte[] encrypted1 = hex2byte(msg);
+        byte[] original = cipher.doFinal(encrypted1);
+
+        return new String(original, "UTF-8");
     }
     
     public static byte[] hex2byte(String strhex) {
